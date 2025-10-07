@@ -17,6 +17,12 @@ import hashlib
 from datetime import datetime, timedelta
 from collections import deque
 from typing import Dict, Any, List, Optional, Set
+import pytz
+from tzlocal import get_localzone_name
+APP_TZ =os.getenv("APP_TZ", "").strip()
+if not APP_TZ:
+    APP_TZ = get_localzone_name()
+TZ = pytz.timezone(APP_TZ)
 
 import streamlit as st
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -238,7 +244,7 @@ class AppState:
     def __init__(self):
         self.storage = Storage()
         self.sms = SmsProvider()
-        self.scheduler = BackgroundScheduler(timezone="local")
+        self.scheduler = BackgroundScheduler(timezone="timezone_TZ")
         self.observer: Optional[Observer] = None
         self.current_file: str = current_log_path()
         self._stop_event = threading.Event()
@@ -249,7 +255,9 @@ class AppState:
         self._mutex = threading.Lock()
 
         # 스케줄: 매일 09:00 리셋
-        self.scheduler.add_job(self.reset_at_9, CronTrigger(hour=9, minute=0))
+        self.scheduler.add_job(self.reset_at_9, 
+        CronTrigger(hour=9, minute=0,
+        timezone=TZ))
         # 30초마다 날짜변경/파일 스위치 체크
         self.scheduler.add_job(self.check_rollover, "interval", seconds=30)
         self.scheduler.start()
