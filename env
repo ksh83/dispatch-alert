@@ -1,0 +1,9 @@
+APP_PASSWORD=원하는비번
+
+LOG_DIR=./logs
+LOG_FILE_PREFIX=ERSS_
+
+# Solapi (실사용 시 필수)
+SOLAPI_API_KEY=발급키
+SOLAPI_API_SECRET=발급시크릿
+SOLAPI_SENDER=010XXXXXXXX   # 사전등록된 발신번호
