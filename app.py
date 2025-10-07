@@ -244,7 +244,7 @@ class AppState:
     def __init__(self):
         self.storage = Storage()
         self.sms = SmsProvider()
-        self.scheduler = BackgroundScheduler(timezone="timezone_TZ")
+        self.scheduler = BackgroundScheduler(timezone=TZ)
         self.observer: Optional[Observer] = None
         self.current_file: str = current_log_path()
         self._stop_event = threading.Event()
