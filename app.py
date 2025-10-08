@@ -498,7 +498,10 @@ with st.expander("🔧 진단 도구", expanded=False):
         else:
             try:
                 ok = app.sms.send(test_phone, "[테스트] 출동알림 시스템 연결 확인")
-                st.success("Solapi 호출 성공") if ok else st.error("Solapi 호출 실패(콘솔/로그 확인)")
+                if ok:
+                    st.success("Solapi 호출 성공")
+                else:
+                    st.error("Solapi 호출 실패 (콘솔/로그 확인)")
             except Exception as e:
                 st.exception(e)
 
